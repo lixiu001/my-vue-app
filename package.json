@@ -2,13 +2,17 @@
   "name": "my-vue-app",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "rimraf dist && vue-tsc -b && vite build && electron-builder",
+    "preview": "vite preview",
+    "electron": "nodemon --exec electron . --watch ./ --ext .js,.html,.css,.vue",
+    "electron:dev": "npm-run-all --parallel dev electron",
+    "electron:build": "vite build && electron-builder"
   },
   "dependencies": {
+    "axios": "^1.7.3",
     "element-plus": "^2.7.8",
     "pinia": "^2.2.0",
     "vue": "^3.4.31",
@@ -16,10 +20,20 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
+    "concurrently": "^8.2.2",
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3",
+    "electron-devtools-installer": "^3.2.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
+    "nodemon": "^3.1.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",
-    "vue-tsc": "^2.0.24"
+    "vite-plugin-electron": "^0.28.7",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vue-tsc": "^2.0.24",
+    "wait-on": "^7.2.0"
   }
 }

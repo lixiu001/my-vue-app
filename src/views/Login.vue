@@ -19,7 +19,7 @@ const login = async () => {
   try {
     const response = await fakeLoginRequest(form.username, form.password);
     if (response.success) {
-      ElMessage.success('登陆成功');
+      // ElMessage.success('登陆成功');
       errorMessage.value = null;
     } else {
       throw new Error('Invalid credentials');

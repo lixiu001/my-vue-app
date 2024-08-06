@@ -2,7 +2,17 @@
   <div class="chat-container">
     <div class="chat-window" ref="chatWindow">
       <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.type === 'sent' ? 'sent' : 'received']">
-        {{ msg.text }}
+        <div class="mainInfo"> {{ msg.text }} </div>
+        <div v-if="msg.showInfo" class="info">
+          <div v-if="msg.infoType" :class="['info-icon', msg.infoType]"></div>
+          <div class="info-message">
+            <div class="main-message">{{ msg.mainInfo }}</div>
+            <div class="additional-message">{{ msg.additionalInfo }}</div>
+          </div>
+        </div>
+        <div v-if="msg.hasActionButton" class="message-actions" @click="clickActionMessage(msg)">
+          {{ msg.actionButtonText }} >
+        </div>
       </div>
     </div>
 
@@ -45,8 +55,8 @@ interface Message {
   };
 }
 
-const chatWindow = ref(null);
-const messages = ref([]);
+const chatWindow = ref();
+const messages = ref<Message[]>([]);
 const inputMessage = ref('');
 const showOptions = ref(false);
 const options = ref(['预生产紧急发版', '正式区紧急发版']);
@@ -64,14 +74,31 @@ const handleKeydown = (event: KeyboardEvent) => {
     sendMessage();
   }
 };
-
+const clickActionMessage = (msg: Message) => {
+  console.log(msg);
+  // router.push({ name: 'Detail', query: { message: JSON.stringify(msg) } })
+}
 const sendMessage = async () => {
   if (inputMessage.value.trim()) {
     messages.value.push({ text: inputMessage.value, type: 'sent' });
     inputMessage.value = '';
     // 模拟接收到的消息
     setTimeout(() => {
-      messages.value.push({ text: '收到: ' + inputMessage.value, type: 'received' });
+      messages.value.push({
+        text: '收到: ' + inputMessage.value, 
+        type: 'received',
+        showInfo:true,         // 是否显示提示信息
+        infoType: 'success' , // 'success' | 'error' | 'warning';
+        mainInfo: '发布失败！',      // 主要提示信息
+        additionalInfo: '失败原因: XXXXX' ,
+        hasActionButton: true,
+        actionButtonText:'查看详情',
+        link: {
+          url: '',            // 链接的 URL
+          text: '',           // 链接的文本
+          metadata: {},
+        }
+      });
     }, 1000);
     // Ensure DOM updates before scrolling
     await nextTick();
@@ -136,6 +163,7 @@ const selectOption = (option: string) => {
       margin-bottom: 8px;
       background: #FFFFFF;
       border-radius: 3px 9px 9px 9px;
+      cursor: pointer;
     }
 
     .sent {
