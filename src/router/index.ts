@@ -1,32 +1,33 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
-import Login from '../views/Login.vue'; 
-// import Chat from '../views/Chat.vue'; 
-// import Detail from '../views/Detail.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+// import Login from '../views/Login.vue'; 
+import ReleaseEmergency from '../views/ReleaseEmergency.vue'; 
+import ReleaseProgress from '../views/ReleaseProgress.vue'; 
+import Chat from '../views/Chat.vue'; 
 const routes = [
   // {
   //   path: '/',
-  //   name: 'Chat',
-  //   component: Chat,
-  // },
-  // {
-  //   path: '/detail',
-  //   name: 'Detail',
-  //   component: Detail
+  //   name: 'login',
+  //   component: Login,
   // },
   {
     path: '/',
-    name: 'login',
-    component: Login,
+    name: 'Chat',
+    component: Chat,
   },
-  // {
-  //   path: '/axios',
-  //   name: 'Axios',
-  //   component: () => import('@/views/axios.vue') // 懒加载组件
-  // }
+  {
+    path: '/release-emergency',
+    name: 'ReleaseEmergency',
+    component: ReleaseEmergency
+  },
+  {
+    path: '/release-progress',
+    name: 'ReleaseProgress',
+    component: ReleaseProgress
+  },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

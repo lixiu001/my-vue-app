@@ -1,0 +1,19 @@
+interface LinkMetadata {
+  [key: string]: any;       // 可以存储任何额外的链接元数据
+}
+
+export interface Message {
+  text: string;  // 消息内容
+  type: 'sent' | 'received';  // 发送或接收
+  showInfo?: boolean;         // 是否显示提示信息
+  infoType?: 'success' | 'error' | 'warning'; // 提示信息的类型
+  mainInfo?: string;          // 主要提示信息
+  additionalInfo?: string;    // 附加提示信息
+  hasActionButton?: boolean;  // 是否存在执行按钮
+  actionButtonText?: string;  // 执行按钮的文本
+  link?: {
+    url?: string;              // 链接的 URL
+    text?: string;             // 链接的文本
+    metadata?: LinkMetadata;  // 额外的链接元数据
+  };
+}

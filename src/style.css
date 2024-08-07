@@ -1,9 +1,5 @@
 :root {
-  width: 100%;
-  height: 100%;
   -webkit-app-region: drag;
-  overflow: hidden;
-  padding: 0px 44px;
 }
 body,
 ul,
@@ -31,13 +27,9 @@ img {
   border-style: none;
 }
 
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-}
 #app {
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  position: fixed;
   background: #ffffff;
+  padding: 0px 44px;
 }

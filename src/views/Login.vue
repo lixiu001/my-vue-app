@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from "vue";
+import { useRouter } from 'vue-router';
+// import { login } from '../../services/login.js'; 
 
 const form = reactive({
   username: '',
@@ -19,14 +21,20 @@ const login = async () => {
   try {
     const response = await fakeLoginRequest(form.username, form.password);
     if (response.success) {
-      // ElMessage.success('登陆成功');
       errorMessage.value = null;
+      // localStorage.setItem('userInfo', JSON.stringify(form)); 
+      const router = useRouter();
+      router.push({ name: 'Chat' });
     } else {
-      throw new Error('Invalid credentials');
+      errorMessage.value = '用户名或密码错误';
     }
   } catch (error) {
     errorMessage.value = '用户名或密码错误';
   }
+}
+
+const closeErrorMessage = () => {
+  errorMessage.value = null;
 }
 
 // 模拟的登陆请求
@@ -44,10 +52,13 @@ const fakeLoginRequest = (username: string, password: string) => {
 </script>
 
 <template>
+   <RouterLink to="/">Go to Home</RouterLink>
+   <RouterLink to="/chat">Go to About</RouterLink>
   <div class="login">
     <span class="title">欢迎登陆</span>
     <el-form ref="ruleFormRef" :model="form" status-icon>
-      <el-alert class="error-message" v-if="errorMessage" title="用户名或密码错误" type="error" :closable="false" show-icon />
+      <el-alert class="error-message" v-if="errorMessage" title="用户名或密码错误" type="error" :closable="true" show-icon
+        @close="closeErrorMessage" />
       <el-form-item>
         <el-input v-model="form.username" placeholder="用户名" />
       </el-form-item>
@@ -91,6 +102,7 @@ const fakeLoginRequest = (username: string, password: string) => {
 
   .el-form {
     width: 100%;
+
     .el-form-item:first-child {
       margin-bottom: 32px;
     }
@@ -125,6 +137,10 @@ const fakeLoginRequest = (username: string, password: string) => {
 
   .login-button-inactive {
     background: #ADC8FF;
+  }
+
+  :deep(.el-alert__close-btn) {
+    top: 5px;
   }
 }
 </style>

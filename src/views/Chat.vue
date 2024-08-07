@@ -17,67 +17,49 @@
     </div>
 
     <div class="input-container">
-      <el-popover placement="top" :width="200" trigger="click" popper-class="tip-popover">
-        <template #reference>
-          <el-input v-model="inputMessage" placeholder="输入消息..." @input="handleInput" @keydown="handleKeydown">
-            <template #append>
-              <i class="el-icon-s-promotion" @click="sendMessage" style="cursor: pointer;"></i>
-            </template>
-          </el-input>
+      <el-input v-model="inputMessage" placeholder="输入消息..." @input="handleInput">
+        <template #append>
+          <i class="el-icon-s-promotion" style="cursor: pointer;"></i>
         </template>
-        <div v-for="option in options" :key="option" :label="option" @click="selectOption(option)"> {{ option }} </div>
-      </el-popover>
+      </el-input>
+      <template v-if="showOptions">
+        <ul class="enter-list">
+          <li v-for="(item, index) in options" :key="index" @click="navigateTo(item.url)">
+            {{ item.title }}
+          </li>
+        </ul>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
-import { ElMessage } from 'element-plus';
-
-interface LinkMetadata {
-  [key: string]: any;       // 可以存储任何额外的链接元数据
-}
-
-interface Message {
-  text: string;  // 消息内容
-  type: 'sent' | 'received';  // 发送或接收
-  showInfo?: boolean;         // 是否显示提示信息
-  infoType?: 'success' | 'error' | 'warning'; // 提示信息的类型
-  mainInfo?: string;          // 主要提示信息
-  additionalInfo?: string;    // 附加提示信息
-  hasActionButton?: boolean;  // 是否存在执行按钮
-  actionButtonText?: string;  // 执行按钮的文本
-  link?: {
-    url?: string;              // 链接的 URL
-    text?: string;             // 链接的文本
-    metadata?: LinkMetadata;  // 额外的链接元数据
-  };
-}
+import { useRouter } from 'vue-router';
+import { Message } from '../interface/chat';
 
 const chatWindow = ref();
 const messages = ref<Message[]>([]);
 const inputMessage = ref('');
 const showOptions = ref(false);
-const options = ref(['预生产紧急发版', '正式区紧急发版']);
+const options = ref([
+  { title: '紧急发版申请', url: '/release-emergency' },
+  { title: '发版申请进度查询', url: '/release-progress' }
+]);
+const router = useRouter();
+const navigateTo = (url: string) => {
+  router.push(url);
+};
 
 const handleInput = (target: string) => {
-  if (target.includes('@')) {
-    showOptions.value = true;
-  } else {
-    showOptions.value = false;
-  }
+  showOptions.value = target?.includes('@');
 };
 
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter') {
-    sendMessage();
-  }
-};
 const clickActionMessage = (msg: Message) => {
   console.log(msg);
   // router.push({ name: 'Detail', query: { message: JSON.stringify(msg) } })
 }
+
 const sendMessage = async () => {
   if (inputMessage.value.trim()) {
     messages.value.push({ text: inputMessage.value, type: 'sent' });
@@ -85,14 +67,14 @@ const sendMessage = async () => {
     // 模拟接收到的消息
     setTimeout(() => {
       messages.value.push({
-        text: '收到: ' + inputMessage.value, 
+        text: '收到: ' + inputMessage.value,
         type: 'received',
-        showInfo:true,         // 是否显示提示信息
-        infoType: 'success' , // 'success' | 'error' | 'warning';
+        showInfo: true,         // 是否显示提示信息
+        infoType: 'success', // 'success' | 'error' | 'warning';
         mainInfo: '发布失败！',      // 主要提示信息
-        additionalInfo: '失败原因: XXXXX' ,
+        additionalInfo: '失败原因: XXXXX',
         hasActionButton: true,
-        actionButtonText:'查看详情',
+        actionButtonText: '查看详情',
         link: {
           url: '',            // 链接的 URL
           text: '',           // 链接的文本
@@ -100,22 +82,12 @@ const sendMessage = async () => {
         }
       });
     }, 1000);
-    // Ensure DOM updates before scrolling
     await nextTick();
-    // Scroll to bottom
     if (chatWindow.value) {
       chatWindow.value.scrollTop = chatWindow.value.scrollHeight;
     }
   } else {
-    ElMessage.error('消息不能为空');
-  }
-};
-
-const selectOption = (option: string) => {
-  const atIndex = inputMessage.value.lastIndexOf('@');
-  if (atIndex !== -1) {
-    inputMessage.value = inputMessage.value.substring(0, atIndex) + option;
-    showOptions.value = false;
+    console.error('消息不能为空');
   }
 };
 </script>
@@ -187,6 +159,22 @@ const selectOption = (option: string) => {
     bottom: 16px;
     width: -webkit-fill-available;
     margin-right: 20px;
+    position: relative;
+
+    .enter-list {
+      position: absolute;
+      background: #fff;
+      height: 50px;
+      bottom: 45px;
+      font-family: PingFangSC-Regular;
+      color: #8794AB;
+      padding: 8px;
+      cursor: pointer;
+      li {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+    }
 
     :deep(.el-input__wrapper) {
       box-shadow: 0 1px 0 0 #dcdfe6 inset, 0 -1px 0 0 #dcdfe6 inset, 1px 0 0 0 #dcdfe6 inset;
@@ -201,10 +189,9 @@ const selectOption = (option: string) => {
     }
 
     .el-icon-s-promotion {
-      width: 50px;
-      height: 50px;
-      background-image: url('../assets/robot.png');
-      background-size: cover;
+      width: 24px;
+      height: 40px;
+      background-image: url('../assets/send.svg');
       background-repeat: no-repeat;
       background-position: center;
     }

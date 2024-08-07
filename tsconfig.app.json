@@ -23,5 +23,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "electron/**/*.ts",
+    "electron/**/*.ts",
+    "electron/main.js",
+    "electron/preload.js"
+, "src/services/api.js", "src/services/api.js"  ]
 }
