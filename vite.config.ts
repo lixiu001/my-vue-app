@@ -4,6 +4,9 @@ import { resolve } from 'path';
 import fs from 'node:fs';
 import electron from 'vite-plugin-electron/simple';
 import pkg from './package.json';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
@@ -16,6 +19,13 @@ export default defineConfig(({ command }) => {
     base: './', // 设置打包路径
     plugins: [
       vue(),
+      Components({
+        resolvers: [
+          AntDesignVueResolver({
+            importStyle: false, // css in js
+          }),
+        ],
+      }),
       // electron({
       //   main: {
       //     entry: 'electron/main.js',

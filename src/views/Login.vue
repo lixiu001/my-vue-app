@@ -1,40 +1,58 @@
+<template>
+  <div class="login">
+    <span class="title">欢迎登陆</span>
+    <a-form ref="ruleFormRef" :model="formState" name="basic" autocomplete="off">
+      <a-alert class="error-message" v-if="showErrorMessage" message="用户名或密码错误" type="error" show-icon closable
+        @close="closeErrorMessage" />
+      <a-form-item name="username">
+        <a-input v-model:value="formState.username" placeholder="用户名" />
+      </a-form-item>
+      <a-form-item name="password">
+        <a-input-password v-model:value="formState.password" placeholder="密码" />
+      </a-form-item>
+      <a-form-item name="remember">
+        <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
+      </a-form-item>
+      <a-form-item>
+        <a-button class="login-button" type="primary" :class="buttonClass" @click="login()">登陆</a-button>
+      </a-form-item>
+    </a-form>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { reactive, ref, computed } from "vue";
 import { useRouter } from 'vue-router';
-// import { login } from '../../services/login.js'; 
-
-const form = reactive({
+import { message } from 'ant-design-vue';
+const router = useRouter();
+const formState = reactive({
   username: '',
   password: '',
   remember: false,
 })
-
-const errorMessage = ref<string | null>(null);
+const showErrorMessage = ref(false);
 const buttonClass = computed(() => {
-  console.log(form.username);
-  console.log(form.password);
-
-  return form.username && form.password ? 'login-button-active' : 'login-button-inactive';
+  return formState.username && formState.password ? 'login-button-active' : 'login-button-inactive';
 });
 
 const login = async () => {
-  try {
-    const response = await fakeLoginRequest(form.username, form.password);
-    if (response.success) {
-      errorMessage.value = null;
-      // localStorage.setItem('userInfo', JSON.stringify(form)); 
-      const router = useRouter();
-      router.push({ name: 'Chat' });
-    } else {
-      errorMessage.value = '用户名或密码错误';
-    }
-  } catch (error) {
-    errorMessage.value = '用户名或密码错误';
+  showErrorMessage.value = false;
+  if (!formState.username || !formState.password) {
+    message.error('请填写用户名或密码!');
+    return;
+  }
+  const response = await fakeLoginRequest(formState.username, formState.password);
+  if (response.success) {
+    showErrorMessage.value = false;
+    // localStorage.setItem('userInfo', JSON.stringify(form)); 
+    router.push({ name: 'Chat' });
+  } else {
+    showErrorMessage.value = true;
   }
 }
 
 const closeErrorMessage = () => {
-  errorMessage.value = null;
+  showErrorMessage.value = false;
 }
 
 // 模拟的登陆请求
@@ -51,28 +69,6 @@ const fakeLoginRequest = (username: string, password: string) => {
 };
 </script>
 
-<template>
-   <RouterLink to="/">Go to Home</RouterLink>
-   <RouterLink to="/chat">Go to About</RouterLink>
-  <div class="login">
-    <span class="title">欢迎登陆</span>
-    <el-form ref="ruleFormRef" :model="form" status-icon>
-      <el-alert class="error-message" v-if="errorMessage" title="用户名或密码错误" type="error" :closable="true" show-icon
-        @close="closeErrorMessage" />
-      <el-form-item>
-        <el-input v-model="form.username" placeholder="用户名" />
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="form.password" type="password" placeholder="密码" show-password />
-      </el-form-item>
-      <el-form-item>
-        <el-checkbox label="记住我" v-model="form.remember" />
-      </el-form-item>
-    </el-form>
-    <el-button class="login-button" :class="buttonClass" @click="login()">登陆</el-button>
-  </div>
-</template>
-
 <style lang="less" scoped>
 .login {
   width: 100%;
@@ -81,6 +77,7 @@ const fakeLoginRequest = (username: string, password: string) => {
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
+  padding: 0px 44px;
 
   .title {
     height: 48px;
@@ -100,21 +97,32 @@ const fakeLoginRequest = (username: string, password: string) => {
     margin-bottom: 8px;
   }
 
-  .el-form {
+  .ant-form {
     width: 100%;
 
-    .el-form-item:first-child {
+    .ant-form-item:first-child {
       margin-bottom: 32px;
+    }
+
+    .ant-input-affix-wrapper {
+      background: #F1F4F8;
+      border-radius: 3px;
+      height: 48px;
+
+      .ant-input {
+        background: #F1F4F8;
+      }
+    }
+
+    .ant-input {
+      min-width: 350px;
+      height: 48px;
+      background: #F1F4F8;
+      border-radius: 3px;
     }
   }
 
-  .el-input {
-    min-width: 350px;
-    height: 48px;
-    border-radius: 3px;
-  }
-
-  :deep(.el-input__wrapper) {
+  :deep(.ant-input-affix-wrapper >input.ant-input) {
     background: #F1F4F8;
   }
 
@@ -137,10 +145,6 @@ const fakeLoginRequest = (username: string, password: string) => {
 
   .login-button-inactive {
     background: #ADC8FF;
-  }
-
-  :deep(.el-alert__close-btn) {
-    top: 5px;
   }
 }
 </style>

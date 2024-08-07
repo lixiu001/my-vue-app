@@ -28,8 +28,29 @@ img {
 }
 
 #app {
+  width: 100vw;
   height: 100vh;
   position: fixed;
   background: #ffffff;
-  padding: 0px 44px;
+}
+
+.default-button {
+  width: 60px;
+  height: 32px;
+  background: #e8edf4;
+  border-radius: 2px;
+  font-family: PingFangSC-Regular;
+  color: #1a2446;
+  margin-right: 16px;
+  border: none;
+}
+
+.primary-button {
+  width: 60px;
+  height: 32px;
+  background: #3366ff;
+  border-radius: 2px;
+  font-family: PingFangSC-Regular;
+  color: #ffffff;
+  border: none;
 }

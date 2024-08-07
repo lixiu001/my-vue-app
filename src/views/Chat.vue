@@ -17,11 +17,11 @@
     </div>
 
     <div class="input-container">
-      <el-input v-model="inputMessage" placeholder="输入消息..." @input="handleInput">
-        <template #append>
+      <a-input v-model:value="inputMessage" placeholder="输入消息..."  @input="handleInput">
+        <template #suffix>
           <i class="el-icon-s-promotion" style="cursor: pointer;"></i>
         </template>
-      </el-input>
+      </a-input>
       <template v-if="showOptions">
         <ul class="enter-list">
           <li v-for="(item, index) in options" :key="index" @click="navigateTo(item.url)">

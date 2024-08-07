@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
+import locale from "ant-design-vue/es/date-picker/locale/zh_CN";
+dayjs.locale("zh-cn");
 </script>
 
 <template>
-  <router-view />
+  <a-config-provider :locale="locale">
+    <router-view />
+  </a-config-provider>
 </template>
 
-<style>
-</style>
+<style></style>
