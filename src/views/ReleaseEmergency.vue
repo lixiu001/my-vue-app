@@ -1,9 +1,9 @@
 <template>
   <div class="emergency-release-container">
-    <ReleaseHeader />
+    <ReleaseHeader :title="紧急发版申请" />
     <main class="main-content">
       <ReleaseInfo />
-      <ReleaseContent />
+      <ReleaseContent ref="releaseContentRef" />
     </main>
     <footer class="footer">
       <a-button class="default-button" @click="handleCancel">取消</a-button>
@@ -13,11 +13,12 @@
 </template>
 
 <script setup lang="ts">
+import {ref} from 'vue'
 import { useRouter } from 'vue-router';
 import ReleaseHeader from '../components/ReleaseHeader.vue';
 import ReleaseInfo from '../components/ReleaseInfo.vue';
 import ReleaseContent from '../components/ReleaseContent.vue';
-
+const releaseContentRef = ref();
 const router = useRouter();
 
 const handleCancel = () => {
@@ -25,6 +26,9 @@ const handleCancel = () => {
 }
 
 const handleSubmit = () => {
+  if(releaseContentRef.value.empty){
+    return
+  }
   router.push('/chat');
 }
 
@@ -42,6 +46,7 @@ const handleSubmit = () => {
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
+    overflow: auto;
   }
 
   .footer {

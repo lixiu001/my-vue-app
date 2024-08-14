@@ -44,8 +44,9 @@ const login = async () => {
   const response = await fakeLoginRequest(formState.username, formState.password);
   if (response.success) {
     showErrorMessage.value = false;
+    // window.electron.ipcRenderer.send('login-success'); // 通知主进程登录成功
+    // router.push('/robot');
     // localStorage.setItem('userInfo', JSON.stringify(form)); 
-    router.push({ name: 'Chat' });
   } else {
     showErrorMessage.value = true;
   }

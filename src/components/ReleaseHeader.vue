@@ -1,12 +1,20 @@
 <template>
   <header class="header">
-    <div class="header-title">紧急发版申请</div>
+    <div class="header-title">{{ title }}</div>
     <CloseOutlined class="close-btn" color="#8794AB" @click="handleCancel" />
   </header>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
 import { CloseOutlined } from '@ant-design/icons-vue';
+const props = defineProps({
+  title: {
+    type: String,
+    default: '紧急发版申请',
+  },
+});
+
+</script>
 
 <style scoped>
 .header {

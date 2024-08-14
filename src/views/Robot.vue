@@ -2,7 +2,7 @@
   <img src="../assets/robot.png" alt="Vue 3 图片">
 </template>
 
-<script setup>
+<script setup lang="ts">
   
 </script>
 

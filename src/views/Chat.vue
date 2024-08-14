@@ -1,5 +1,10 @@
 <template>
   <div class="chat-container">
+    <div class="title">
+      <img src="../assets/robot.png" alt="">
+      数字人
+      <CloseOutlined />
+    </div>
     <div class="chat-window" ref="chatWindow">
       <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.type === 'sent' ? 'sent' : 'received']">
         <div class="mainInfo"> {{ msg.text }} </div>
@@ -17,7 +22,7 @@
     </div>
 
     <div class="input-container">
-      <a-input v-model:value="inputMessage" placeholder="输入消息..."  @input="handleInput">
+      <a-input v-model:value="inputMessage" placeholder="输入消息..." @input="handleInput">
         <template #suffix>
           <i class="el-icon-s-promotion" style="cursor: pointer;"></i>
         </template>
@@ -36,8 +41,8 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import { Message } from '../interface/chat';
-
+import { Message } from '../interface';
+import { CloseOutlined } from '@ant-design/icons-vue';
 const chatWindow = ref();
 const messages = ref<Message[]>([]);
 const inputMessage = ref('');
@@ -56,8 +61,6 @@ const handleInput = (target: string) => {
 };
 
 const clickActionMessage = (msg: Message) => {
-  console.log(msg);
-  // router.push({ name: 'Detail', query: { message: JSON.stringify(msg) } })
 }
 
 const sendMessage = async () => {
@@ -105,6 +108,30 @@ const sendMessage = async () => {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+
+  .title {
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A2446;
+    line-height: 18px;
+    position: relative;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .anticon-close {
+      position: absolute;
+      right: 0px;
+      top: 8px;
+      width: 14px;
+      height: 14px;
+      color: #8794AB;
+    }
+
+  }
 
   .chat-window {
     flex: 1;
@@ -170,6 +197,7 @@ const sendMessage = async () => {
       color: #8794AB;
       padding: 8px;
       cursor: pointer;
+
       li {
         font-size: 13px;
         margin-bottom: 8px;

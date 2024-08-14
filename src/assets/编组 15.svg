@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 15</title>
+    <g id="页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01-3-PR/预生产紧急发版申请" transform="translate(-848.000000, -534.000000)">
+            <g id="编组-15" transform="translate(848.000000, 534.000000)">
+                <rect id="矩形备份-7" opacity="0.200000003" x="0" y="0" width="24" height="24"></rect>
+                <path d="M3,3.6 L21,3.6 C21.3313708,3.6 21.6,3.86862915 21.6,4.2 L21.6,16.2 C21.6,16.5313708 21.3313708,16.8 21,16.8 L3,16.8 C2.66862915,16.8 2.4,16.5313708 2.4,16.2 L2.4,4.2 C2.4,3.86862915 2.66862915,3.6 3,3.6 Z M6.03852242,20.4 L18.0145611,20.4" id="形状结合" stroke="#1A2446" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                <text id="SQL" font-family="Helvetica-Bold, Helvetica" font-size="7.5" font-weight="bold" fill="#3366FF">
+                    <tspan x="4.29125977" y="13.7">SQL</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

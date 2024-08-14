@@ -17,3 +17,13 @@ export interface Message {
     metadata?: LinkMetadata;  // 额外的链接元数据
   };
 }
+
+export interface ListItem {
+  publishError : boolean;
+  publishSucess : boolean;
+  no1: string;
+  no2: string;
+  no3: string;
+  no4: string;
+  no5: string;
+}

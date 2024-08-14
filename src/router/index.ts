@@ -1,16 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login.vue'; 
-import ReleaseEmergency from '../views/ReleaseEmergency.vue'; 
-import ReleaseProgress from '../views/ReleaseProgress.vue'; 
 import Chat from '../views/Chat.vue'; 
+import Robot from '../views/Robot.vue'; 
+import ReleaseEmergency from '../views/ReleaseEmergency.vue'; 
+import Approval from '../views/Approval.vue'; 
+import EditReleaseRequest from '../views/EditReleaseRequest.vue'; 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'login',
+  //   component: Login,
+  // },
+  // {
+  //   path: '/',
+  //   name: 'Chat',
+  //   component: Chat,
+  // },
+  // {
+  //   path: '/',
+  //   name: 'ReleaseEmergency',
+  //   component: ReleaseEmergency
+  // },
+   // {
+  //   path: '/',
+  //   name: 'ReleaseEmergency',
+  //   component: ReleaseEmergency
+  // },
   {
-    path: '/login',
-    name: 'login',
-    component: Login,
+    path: '/robot',
+    name: 'robot',
+    component: Robot,
   },
   {
-    path: '/',
+    path: '/chat',
     name: 'Chat',
     component: Chat,
   },
@@ -20,14 +42,19 @@ const routes = [
     component: Chat,
   },
   {
+    path: '/edit-release-emergency',
+    name: 'EditReleaseRequest',
+    component: EditReleaseRequest
+  },
+  {
     path: '/release-emergency',
     name: 'ReleaseEmergency',
     component: ReleaseEmergency
   },
   {
-    path: '/release-progress',
-    name: 'ReleaseProgress',
-    component: ReleaseProgress
+    path: '/approval',
+    name: 'Approval',
+    component: Approval
   },
 ];
 
