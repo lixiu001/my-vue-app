@@ -22,7 +22,7 @@
     </div>
 
     <div class="input-container">
-      <a-input v-model:value="inputMessage" placeholder="输入消息..." @input="handleInput">
+      <a-input v-model:value="inputMessage" placeholder="输入消息..." @input="handleInput" @keydown="handleKeydown">
         <template #suffix>
           <i class="el-icon-s-promotion" style="cursor: pointer;"></i>
         </template>
@@ -56,11 +56,18 @@ const navigateTo = (url: string) => {
   router.push(url);
 };
 
-const handleInput = (target: string) => {
-  showOptions.value = target?.includes('@');
+const handleInput = (event: string) => {
+  showOptions.value = event?.target?._value?.includes('@');
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    sendMessage();
+  }
 };
 
 const clickActionMessage = (msg: Message) => {
+  sendMessage();
 }
 
 const sendMessage = async () => {
@@ -70,7 +77,7 @@ const sendMessage = async () => {
     // 模拟接收到的消息
     setTimeout(() => {
       messages.value.push({
-        text: '收到: ' + inputMessage.value,
+        text: '王艳，检测到您有多个发版申请，请选择需要查询的对象：',
         type: 'received',
         showInfo: true,         // 是否显示提示信息
         infoType: 'success', // 'success' | 'error' | 'warning';
@@ -161,7 +168,6 @@ const sendMessage = async () => {
       padding: 12px;
       margin-bottom: 8px;
       background: #FFFFFF;
-      border-radius: 3px 9px 9px 9px;
       cursor: pointer;
     }
 
@@ -169,12 +175,14 @@ const sendMessage = async () => {
       background-color: blue;
       color: white;
       align-self: flex-end;
+      border-radius: 9px 9px 9px 9px;
     }
 
     .received {
       background-color: white;
       color: black;
       align-self: flex-start;
+      border-radius: 9px 9px 9px 9px;
     }
   }
 

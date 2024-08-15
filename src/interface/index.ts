@@ -1,3 +1,9 @@
+export interface LoginParams {
+  userName: string;
+  password: string;
+  tenantId: string;
+}
+
 interface LinkMetadata {
   [key: string]: any;       // 可以存储任何额外的链接元数据
 }

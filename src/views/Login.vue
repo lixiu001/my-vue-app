@@ -4,8 +4,8 @@
     <a-form ref="ruleFormRef" :model="formState" name="basic" autocomplete="off">
       <a-alert class="error-message" v-if="showErrorMessage" message="用户名或密码错误" type="error" show-icon closable
         @close="closeErrorMessage" />
-      <a-form-item name="username">
-        <a-input v-model:value="formState.username" placeholder="用户名" />
+      <a-form-item name="userNname">
+        <a-input v-model:value="formState.userName" placeholder="用户名" />
       </a-form-item>
       <a-form-item name="password">
         <a-input-password v-model:value="formState.password" placeholder="密码" />
@@ -14,7 +14,7 @@
         <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
       </a-form-item>
       <a-form-item>
-        <a-button class="login-button" type="primary" :class="buttonClass" @click="login()">登陆</a-button>
+        <a-button class="login-button" type="primary" :class="buttonClass" @click="loginUser()">登陆</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -24,50 +24,45 @@
 import { reactive, ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
+import { login } from '../services/baseService';
 const router = useRouter();
+const active = ref(false);
 const formState = reactive({
-  username: '',
-  password: '',
+  userName: 'liyxb@digiwin.com',
+  password: 'Liyanxiu000000',
   remember: false,
+  tenantId: ''
 })
 const showErrorMessage = ref(false);
 const buttonClass = computed(() => {
-  return formState.username && formState.password ? 'login-button-active' : 'login-button-inactive';
+  return formState.userName && formState.password ? 'login-button-active' : 'login-button-inactive';
 });
 
-const login = async () => {
+const loginUser = async () => {
   showErrorMessage.value = false;
-  if (!formState.username || !formState.password) {
+  if (!formState.userName || !formState.password) {
     message.error('请填写用户名或密码!');
     return;
   }
-  const response = await fakeLoginRequest(formState.username, formState.password);
-  if (response.success) {
-    showErrorMessage.value = false;
-    // window.electron.ipcRenderer.send('login-success'); // 通知主进程登录成功
-    // router.push('/robot');
-    // localStorage.setItem('userInfo', JSON.stringify(form)); 
-  } else {
-    showErrorMessage.value = true;
+  if (!active.value) {
+    active.value = true;
+    const params = {
+      userName: formState.userName,
+      password: formState.password,
+      tenantId: formState.tenantId,
+    }
+    const result = await login(params, formState.remember);
+    showErrorMessage.value = result.code !== '0' 
+    if (result.code === '0') {
+      ipcRenderer.send('login-success')
+    }
   }
+  active.value = false;
 }
 
 const closeErrorMessage = () => {
   showErrorMessage.value = false;
 }
-
-// 模拟的登陆请求
-const fakeLoginRequest = (username: string, password: string) => {
-  return new Promise<{ success: boolean }>((resolve) => {
-    setTimeout(() => {
-      if (username === 'admin' && password === '123456') {
-        resolve({ success: true });
-      } else {
-        resolve({ success: false });
-      }
-    }, 1000);
-  });
-};
 </script>
 
 <style lang="less" scoped>
