@@ -10,7 +10,10 @@ interface LinkMetadata {
 
 export interface Message {
   text: string;  // 消息内容
-  type: 'sent' | 'received';  // 发送或接收
+  type: 'SEND' | 'RECEIVED';  // 发送或接收
+  displayType?: 'LIST' | 'EXECUTE_LINK'  // 清单｜执行链接  
+  tipInfo?:any
+  list?:any
   showInfo?: boolean;         // 是否显示提示信息
   infoType?: 'success' | 'error' | 'warning'; // 提示信息的类型
   mainInfo?: string;          // 主要提示信息

@@ -6,16 +6,16 @@ import ReleaseEmergency from '../views/ReleaseEmergency.vue';
 import Approval from '../views/Approval.vue'; 
 import EditReleaseRequest from '../views/EditReleaseRequest.vue'; 
 const routes = [
-  {
-    path: '/',
-    name: 'login',
-    component: Login,
-  },
   // {
   //   path: '/',
-  //   name: 'Chat',
-  //   component: Chat,
+  //   name: 'login',
+  //   component: Login,
   // },
+  {
+    path: '/',
+    name: 'Chat',
+    component: Chat,
+  },
   // {
   //   path: '/',
   //   name: 'ReleaseEmergency',
